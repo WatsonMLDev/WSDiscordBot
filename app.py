@@ -1,8 +1,11 @@
 import aiohttp
 import discord
 from discord.ext import commands
+from discord.ext.commands import Greedy, Context
+from typing import Optional, Literal
 import Utils.Database.wsDb as wsDb
-from Utils.buttonClasses import WsEnterQueue
+from DiscordFiles.Buttons.WsModalButtons import WsEnterQueue
+from Utils.Token.Token import get_token
 
 intents = discord.Intents(emojis=True, emojis_and_stickers=True, guild_messages=True,
                           guild_reactions=True, guilds=True, integrations=True, members=True, messages=True,
@@ -16,7 +19,7 @@ class Main(commands.Bot):
 
         # initializes the session and Cogs
         self.session = None
-        self.initial_extensions = ['Cogs.UtilCommands', 'Cogs.WsCog']
+        self.initial_extensions = ['DiscordFiles.Cogs.UtilCommands', 'DiscordFiles.Cogs.WsCog']
 
         # initializes the WS database
         self.ws_db = wsDb.WsDb()
@@ -47,6 +50,7 @@ class Main(commands.Bot):
 
 bot = Main()
 
+# command to sync the slash commands to the discord server (created by Rapptz)
 @bot.command()
 @commands.guild_only()
 @commands.is_owner()
