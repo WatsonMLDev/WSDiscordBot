@@ -5,9 +5,10 @@ from discord.ext.commands import Greedy, Context
 from typing import Optional, Literal
 import Utils.Database.wsDb as wsDb
 from DiscordFiles.Buttons.WsModalButtons import WsEnterQueue
+from DiscordFiles.Buttons.configViews import ConfigRoleView
 from Utils.Token.Token import get_token
 
-intents = discord.Intents(emojis=True, emojis_and_stickers=True, guild_messages=True,
+intents = discord.Intents(bans=True, emojis=True, emojis_and_stickers=True, guild_messages=True,
                           guild_reactions=True, guilds=True, integrations=True, members=True, messages=True,
                           presences=True, reactions=True, message_content=True)
 
@@ -86,5 +87,9 @@ async def sync(
             ret += 1
 
     await ctx.send(f"Synced the tree to {ret}/{len(guilds)}.")
+
+@bot.command()
+async def config(ctx: Context,):
+    await ctx.send('Configuring bot...', ephemeral=True, delete_after=5*60, view=ConfigRoleView(bot, ctx))
 
 bot.run(get_token())
