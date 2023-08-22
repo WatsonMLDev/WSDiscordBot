@@ -1,1 +1,1 @@
-{"_default": {"1": {"players": [], "msgID": -1, "name": "Ws1", "size": "10", "startDate": "2000-01-01"}, "2": {"players": [], "msgID": -1, "name": "Ws2", "size": "15", "startDate": "2000-01-01"}}}
+{"_default": {"1": {"players": [], "msgID": -1, "name": "", "size": 0, "startDate": "", "wsRoleIDs": [731890553087852594], "msgChannel": 731890472020082690}, "2": {"players": [], "msgID": -1, "name": "Ws2", "size": "15", "startDate": "2000-01-01", "wsRoleIDs": [731890553087852594], "msgChannel": 731890472020082690}}}

@@ -52,16 +52,19 @@ class WsStartModal(ui.Modal, title='Questionnaire Response'):
         embed.add_field(name='Please enter the queue by pressing the button below', value="_ _", inline=False)
         embed.set_footer(text='# of people in {} queue: {}'.format(self.name.value, 0))
 
-        #send the message and save the WS contents from the modal in the database
-        await interaction.response.send_message(embed=embed, ephemeral=False)
+        #send the message to the channel in the database and save the WS contents from the modal in the database
+        channel = interaction.guild.get_channel(bot.ws_db.get_msg_channel(self.ws))
+        msg = await channel.send(embed=embed)
+        await interaction.response.send_message("WS {} created".format(self.ws), ephemeral=True)
+
         original_message = await interaction.original_response()
-        bot.ws_db.set_msgID(self.ws, original_message.id)
+        bot.ws_db.set_msgID(self.ws, msg.id)
         bot.ws_db.set_name(self.ws, self.name.value)
         bot.ws_db.set_size(self.ws, self.size.value)
         bot.ws_db.set_startDate(self.ws, self.start_date.value)
 
         #edit the message to add the buttons
-        await original_message.edit(
+        await msg.edit(
             view=WsEnterQueue(self.name.value, self.size.value, self.start_date.value, bot, self.ws))
 
 
@@ -91,7 +94,21 @@ class Ws(commands.Cog):
             await interaction.response.send_message("WS {} is not active".format(ws.value), ephemeral=True)
             return
 
-        await interaction.response.send_message("Ending WS {}".format(ws.value), ephemeral=True)
+        await interaction.response.send_message("Ending WS {}, removing WS roles from players".format(ws.value), ephemeral=True)
+
+        #get the players and roles for the WS, remove all roles from the players
+        players = bot.ws_db.get_players(ws.value)
+        roles = bot.ws_db.get_role_IDs(ws.value)
+        roles = [interaction.guild.get_role(role) for role in roles]
+
+        try:
+            for player in players:
+                member = interaction.guild.get_member(player)
+                await member.remove_roles(*roles)
+        except(AttributeError):
+            await interaction.followup.send("WARNING: Role not found for WS {}, contact server admin to run $config\nSkipped removing roles".format(ws.value))
+        except(discord.errors.Forbidden):
+            await interaction.followup.send("WARNING: Bot does not have permission to remove roles, contact server admin to run $config and remove admin roles\nSkipped removing roles")
 
         #delete the message and null the WS in the database
         embed_id = self.bot.ws_db.get_msgID(ws.value)
@@ -102,31 +119,3 @@ class Ws(commands.Cog):
         bot.ws_db.set_size(ws.value, 0)
         bot.ws_db.set_startDate(ws.value, "")
         bot.ws_db.set_players(ws.value, [])
-
-    #TODO: do this automatically, need to have a way of setting user made roles for each WS Slot through a config command
-    @app_commands.command(name="ws-add-role", description='adds a role to players in white star queue')
-    @admin_only()
-    async def ws_add_role(self, interaction: discord.Interaction, ws_id: int, role: discord.Role):
-        await interaction.response.send_message("Adding role {} to players in WS {}".format(role.name, ws_id),
-                                                ephemeral=True)
-
-        players = self.bot.ws_db.get_players(ws_id)
-        for player in players:
-            await interaction.guild.get_member(player).add_roles(role)
-        await interaction.followup.send(
-            "Added role {} to all {} players in WS {}".format(role.name, len(players), ws_id), ephemeral=True)
-
-    #TODO: do this automatically, need to have a way of setting user made roles for each WS Slot through a config command
-    @app_commands.command(name="ws-remove-role", description='removes a role from players in white star queue')
-    @admin_only()
-    async def ws_remove_role(self, interaction: discord.Interaction, ws_id: int, role: discord.Role):
-        await interaction.response.send_message("Removing role {} from players in WS {}".format(role.name, ws_id),
-                                                ephemeral=True)
-
-        players = self.bot.ws_db.get_players(ws_id)
-        for player in players:
-            await interaction.guild.get_member(player).remove_roles(role)
-        await interaction.followup.send(
-            "Removed role {} from all {} players in WS {}".format(role.name, len(players), ws_id), ephemeral=True)
-
-

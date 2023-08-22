@@ -37,6 +37,10 @@ This is an open-source Discord bot designed to facilitate WS signups for single 
    ```bash
    python app.py
    ```
+## Usage
+
+In Discord, you MUST run the `$config` command to set up the bot. This will link the necessary channels and roles for the bot to function.
+After running the `$config` command, you can use the `/help` command to see a list of commands.
 
 ## How to Contribute
 
