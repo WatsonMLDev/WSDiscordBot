@@ -92,4 +92,20 @@ async def sync(
 async def config(ctx: Context,):
     await ctx.send('Configuring bot...', ephemeral=True, delete_after=5*60, view=ConfigRoleView(bot, ctx))
 
+@bot.event
+async def on_guild_join(guild):
+    # ANSI escape codes for color and style
+    warning_color = "\033[93m"  # Yellow color
+    reset_color = "\033[0m"    # Reset to default
+    bold = "\033[1m"           # Bold text
+
+    warning_msg = """
+    {bold}{color}###############################################
+    # WARNING: Please run the $config command in Discord! #
+    ###############################################{reset}
+    """.format(color=warning_color, bold=bold, reset=reset_color)
+
+    print(warning_msg)
+
+
 bot.run(get_token())
