@@ -15,6 +15,7 @@ This is an open-source Discord bot designed to facilitate WS signups for single 
 
 - Python [Version 3.11]
 - A device to run the bot on (e.g., a Raspberry Pi, a VPS, etc.)
+- Set up a discord app, then the bot, and ahve the token handy: https://discord.com/developers/docs/getting-started
 
 ### Steps
 
