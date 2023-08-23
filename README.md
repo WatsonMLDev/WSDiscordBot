@@ -75,3 +75,6 @@ We welcome contributions from everyone. Here's how you can contribute:
 4. **Create a pull request**: Go to the 'Pull requests' tab of the  repository and click on 'New pull request'. Select the branch you created, then click on 'Create pull request'.
 
 Before creating a pull request, please ensure your code adheres to our coding standards and conventions.
+
+## Contact
+Feel free to join my discord server (https://discord.gg/kUcE6EP) and ask questions in our `general-discusion` channel.
