@@ -31,8 +31,10 @@ This is an open-source Discord bot designed to facilitate WS signups for single 
    ```bash
    pip install -r requirements.txt
    ```
+3. **Add Discord bot token**
+   Find the file `token.json` (/Utils/Database) and insert the token in place of the temp text.
 
-3. **Run the bot**
+4. **Run the bot**
 
    ```bash
    python app.py
