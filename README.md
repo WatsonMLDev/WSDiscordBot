@@ -42,6 +42,13 @@ This is an open-source Discord bot designed to facilitate WS signups for single 
 In Discord, you MUST run the `$config` command to set up the bot. This will link the necessary channels and roles for the bot to function.
 After running the `$config` command, you can use the `/help` command to see a list of commands.
 
+## Persistent Databases
+When you pull new versions, more than likely your database will be over-written. Make sure to implement some type of database saving plan. 
+
+One method is to fork this repository, add this repo as an upstream dependency to your fork, then implement some type of cloud saving.
+
+Another is to use a syncing application (like Syncthing) to restore the DB on updates.
+
 ## How to Contribute
 
 We welcome contributions from everyone. Here's how you can contribute:
