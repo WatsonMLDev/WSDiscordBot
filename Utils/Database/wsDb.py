@@ -52,14 +52,6 @@ class WsDb:
     def set_name(self, wsID, name):
         self.__DB.update({"name": name}, doc_ids=[wsID])
 
-    # Getter for size
-    def get_size(self, wsID):
-        ws = self.__DB.get(doc_id=wsID)
-        return ws["size"] if ws else None
-
-    # Setter for size
-    def set_size(self, wsID, size):
-        self.__DB.update({"size": size}, doc_ids=[wsID])
 
     # Getter for startDate
     def get_startDate(self, wsID):

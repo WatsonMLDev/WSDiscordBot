@@ -20,12 +20,9 @@ class WsStartModal(ui.Modal, title='Questionnaire Response'):
     name = ui.TextInput(label='White Star Name (ex. Ws1)',
                         style=discord.TextStyle.short, placeholder='Ws1', default='Ws1', min_length=3,
                         max_length=40)
-    size = ui.TextInput(label='Anticipated WS Size', style=discord.TextStyle.short, placeholder='5',
-                        default='5',
-                        min_length=1, max_length=2)
     start_date = ui.TextInput(label='Anticipated Start Date', style=discord.TextStyle.short,
                               placeholder='yyyy-MM-DD',
-                              default='2000-01-01', min_length=10, max_length=10)
+                              default='2000-01-01', max_length=10)
     ws = ui.TextInput(label='WS Slot (1 or 2):', style=discord.TextStyle.short, placeholder='1', default='1', max_length=1)
 
     async def on_submit(self, interaction: discord.Interaction):
@@ -46,7 +43,6 @@ class WsStartModal(ui.Modal, title='Questionnaire Response'):
         embed = discord.Embed(title='White Star Sign Up', description='_ _',
                               timestamp=interaction.created_at, color=discord.Color.green())
         embed.add_field(name='White Star Name:', value=self.name.value, inline=True)
-        embed.add_field(name='Anticipated WS Size:', value=self.size.value, inline=True)
         embed.add_field(name='Anticipated Start Date:', value=self.start_date.value, inline=False)
         embed.add_field(name='White Star Slot:', value=self.ws, inline=False)
         embed.add_field(name='Please enter the queue by pressing the button below', value="_ _", inline=False)
@@ -57,12 +53,11 @@ class WsStartModal(ui.Modal, title='Questionnaire Response'):
         original_message = await interaction.original_response()
         bot.ws_db.set_msgID(self.ws, original_message.id)
         bot.ws_db.set_name(self.ws, self.name.value)
-        bot.ws_db.set_size(self.ws, self.size.value)
         bot.ws_db.set_startDate(self.ws, self.start_date.value)
 
         #edit the message to add the buttons
         await original_message.edit(
-            view=WsEnterQueue(self.name.value, self.size.value, self.start_date.value, bot, self.ws))
+            view=WsEnterQueue(self.name.value, self.start_date.value, bot, self.ws))
 
 
 class Ws(commands.Cog):
@@ -99,7 +94,6 @@ class Ws(commands.Cog):
         await discord_message.delete()
         bot.ws_db.set_msgID(ws.value, -1)
         bot.ws_db.set_name(ws.value, "")
-        bot.ws_db.set_size(ws.value, 0)
         bot.ws_db.set_startDate(ws.value, "")
         bot.ws_db.set_players(ws.value, [])
 

@@ -2,10 +2,9 @@ import discord
 
 
 class WsEnterQueue(discord.ui.View):
-    def __init__(self, name, size, start_date, bot, ws):
+    def __init__(self, name, start_date, bot, ws):
         super().__init__(timeout=None)
         self.name = name
-        self.size = size
         self.start_date = start_date
         self.bot = bot
         self.ws = ws
@@ -26,7 +25,6 @@ class WsEnterQueue(discord.ui.View):
         embed = discord.Embed(title='White Star Sign Up', description='_ _',
                               timestamp=interaction.created_at, color=discord.Color.green())
         embed.add_field(name='White Star Name:', value=self.name, inline=True)
-        embed.add_field(name='Anticipated WS Size:', value=self.size, inline=True)
         embed.add_field(name='Anticipated Start Date:', value=self.start_date, inline=False)
         embed.add_field(name='White Star Slot:', value=self.ws, inline=False)
         embed.add_field(name='Please enter the queue by pressing the button below', value="_ _", inline=False)
