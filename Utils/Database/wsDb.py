@@ -62,6 +62,20 @@ class WsDb:
     def set_startDate(self, wsID, start_date):
         self.__DB.update({"startDate": start_date}, doc_ids=[wsID])
 
+    def get_role_IDs(self, wsID):
+        ws = self.__DB.get(doc_id=wsID)
+        return ws["wsRoleIDs"] if ws else None
+
+    def set_role_IDs(self, wsID, roleIDs):
+        self.__DB.update({"wsRoleIDs": roleIDs}, doc_ids=[wsID])
+
+    def get_msg_channel(self, wsID):
+        ws = self.__DB.get(doc_id=wsID)
+        return ws["msgChannel"] if ws else None
+
+    def set_msg_channel(self, wsID, msgChannel):
+        self.__DB.update({"msgChannel": msgChannel}, doc_ids=[wsID])
+
 #
 # if __name__ == "__main__":
 #     ws_db = WsDb()

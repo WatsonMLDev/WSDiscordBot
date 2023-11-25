@@ -14,12 +14,37 @@ class WsEnterQueue(discord.ui.View):
 
         already_in_queue = self.bot.ws_db.get_players(self.ws)
 
+        bugged_role = False
+        bad_permissions = False
         if interaction.user.id not in already_in_queue:
 
             self.bot.ws_db.add_player(self.ws, interaction.user.id)
+
+            roles = self.bot.ws_db.get_role_IDs(self.ws)
+            roles = [interaction.guild.get_role(role) for role in roles]
+            for role in roles:
+                try:
+                    await interaction.user.add_roles(role)
+                except (AttributeError):
+                    bugged_role = True
+                except (discord.errors.Forbidden):
+                    bad_permissions = True
+
+
             await interaction.response.send_message('You have entered the queue', ephemeral=True, delete_after=30)
         else:
             self.bot.ws_db.remove_player(self.ws, interaction.user.id)
+
+            roles = self.bot.ws_db.get_role_IDs(self.ws)
+            roles = [interaction.guild.get_role(role) for role in roles]
+            for role in roles:
+                try:
+                    await interaction.user.remove_roles(role)
+                except (AttributeError):
+                    bugged_role = True
+                except (discord.errors.Forbidden):
+                    bad_permissions = True
+
             await interaction.response.send_message('You have exited the queue', ephemeral=True, delete_after=30)
 
         embed = discord.Embed(title='White Star Sign Up', description='_ _',
@@ -33,6 +58,11 @@ class WsEnterQueue(discord.ui.View):
         embed_id = self.bot.ws_db.get_msgID(self.ws)
         discord_message = await interaction.channel.fetch_message(embed_id)
         await discord_message.edit(embed=embed)
+
+        if bugged_role:
+            await interaction.followup.send('There was an error with the role assignment. Please contact an admin to run $config.')
+        if bad_permissions:
+            await interaction.followup.send('Missing permissions to assign roles. Please contact an admin to run $config and assign non-admin roles.')
 
     @discord.ui.button(label='WS List', style=discord.ButtonStyle.blurple, custom_id='ws_list')
     async def ws_list(self, interaction: discord.Interaction, button: discord.ui.Button):

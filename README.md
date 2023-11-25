@@ -15,6 +15,7 @@ This is an open-source Discord bot designed to facilitate WS signups for single 
 
 - Python [Version 3.11]
 - A device to run the bot on (e.g., a Raspberry Pi, a VPS, etc.)
+- Set up a discord app, then the bot, and ahve the token handy: https://discord.com/developers/docs/getting-started
 
 ### Steps
 
@@ -30,45 +31,52 @@ This is an open-source Discord bot designed to facilitate WS signups for single 
    ```bash
    pip install -r requirements.txt
    ```
+3. **Add Discord bot token**
+   Find the file `token.json` (/Utils/Database) and insert the token in place of the temp text.
 
-3. **Run the bot**
+4. **Run the bot**
 
    ```bash
    python app.py
    ```
+## Usage
+
+In Discord, you MUST run the `$config` command to set up the bot. This will link the necessary channels and roles for the bot to function.
+After running the `$config` command, you can use the `/help` command to see a list of commands.
+
+## Persistent Databases
+When you pull new versions, more than likely your database will be over-written. Make sure to implement some type of database saving plan. 
+
+One method is to fork this repository, add this repo as an upstream dependency to your fork, then implement some type of cloud saving.
+
+Another is to use a syncing application (like Syncthing) to restore the DB on updates.
 
 ## How to Contribute
 
 We welcome contributions from everyone. Here's how you can contribute:
 
-1. **Fork the repository**: Click on the 'Fork' button at the top right corner of this page.
-
-2. **Clone your forked repository**: 
-
-   ```bash
-   git clone [link-to-your-fork]
-   cd [repository-name]
-   ```
-
-3. **Create a new branch**: 
+1. **Create a new branch**: 
 
    ```bash
    git checkout -b [branch-name]
    ```
 
-4. **Make your changes** and then commit them:
+2. **Make your changes** and then commit them:
 
    ```bash
    git add .
    git commit -m "[brief description of your changes]"
    ```
 
-5. **Push your changes**:
+3. **Push your changes**:
 
    ```bash
    git push origin [branch-name]
    ```
 
-6. **Create a pull request**: Go to the 'Pull requests' tab of the original repository and click on 'New pull request'. Select your fork and the branch you created, then click on 'Create pull request'.
+4. **Create a pull request**: Go to the 'Pull requests' tab of the  repository and click on 'New pull request'. Select the branch you created, then click on 'Create pull request'.
 
 Before creating a pull request, please ensure your code adheres to our coding standards and conventions.
+
+## Contact
+Feel free to join my discord server (https://discord.gg/kUcE6EP) and ask questions in our `general-discusion` channel.
