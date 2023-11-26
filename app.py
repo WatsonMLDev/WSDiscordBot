@@ -37,12 +37,11 @@ class Main(commands.Bot):
             if ws['msgID'] == -1:
                 continue
             name = ws['name']
-            size = ws['size']
             start_date = ws['startDate']
             wsID = ws.doc_id
 
             # adds the button functionality back to the message
-            self.add_view(WsEnterQueue(name, size, start_date, self, wsID), message_id=ws['msgID'])
+            self.add_view(WsEnterQueue(name, start_date, self, wsID), message_id=ws['msgID'])
 
     async def close(self):
         # self.google_drive.upload_db_files()
